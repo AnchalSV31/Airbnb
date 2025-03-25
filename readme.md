@@ -19,7 +19,6 @@ This project is a full-stack **Airbnb Clone** built using the **MERN (MongoDB, E
 - React.js (Functional Components, Hooks)
 - React Router
 - TailwindCSS (or Bootstrap for styling)
-- Axios (for API calls)
 
 ### Backend (Node.js & Express)
 - Node.js
@@ -28,12 +27,11 @@ This project is a full-stack **Airbnb Clone** built using the **MERN (MongoDB, E
 - JSON Web Token (JWT) Authentication
 - Multer (for image uploads)
 - Cloudinary (for image storage)
-- Stripe/PayPal (for payments)
 
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/airbnb-clone.git
+   git clone https://github.com/AnchalSV31/Airbnb.git
    ```
 
 2. Install dependencies:
