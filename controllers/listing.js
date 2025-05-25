@@ -85,53 +85,69 @@ module.exports.destroyListing = async (req,res) => {
     res.redirect("/listings");
 };
 
+module.exports.search = async (req, res) => {
+    try {
+        let searchQuery = req.query.q;
+        
+        // Check if search query exists and is not empty
+        if (!searchQuery || searchQuery.trim() === "") {
+            req.flash("error", "Search value cannot be empty!");
+            return res.redirect("/listings");
+        }
 
-// module.exports.search = async(req, res) => {
-//     console.log(req.query.q);
-//     let input = req.query.q.trim().replace(/\s+/g, " "); //remove start and end space
-//     console.log(input);
-//     if(input == "" || input == " "){
-//         //search value is empty
-//         req.flash("error", "Search value empty!!!");
-//         res.redirect("/listings");
-//     }
-// }
+        // Clean up the search query
+        searchQuery = searchQuery.trim().replace(/\s+/g, " ");
 
-// let allListings = await Listing.find({
-//     title: { $regex: element, $options: "i"},
-// });
-// if(allListings.length !=0 ){
-//     res.locals.success = "Listings searched by title";
-//     res.render("listings/index.ejs", {allListings});
-//     return;
-// }
-// if(allListings.length == 0){
-//     allListings = await Listing.find({
-//         category: { $regex: element, $options: "i"},
-//     }).sort({_id: -1});
-//     if(allListings.length != 0) {
-//         res.locals.success = "Listings searched by category";
-//         res.render("listings/index.ejs", {allListings});
-//         return;
-//     }
-// }
-// if(allListings.length == 0) {
-//     allListings = await Listing.find({
-//         country: { $regex: element, $options: "i"},
-//     }).sort({_id: -1});
-//     if(allListings.length != 0) {
-//         res.locals.success = "Listings searched by country";
-//         res.render("listings/index.ejs", {allListings});
-//         return;
-//     }
-// }
-// if(allListings.length == 0) {
-//     allListings = await Listing.find({
-//         location: { $regex: element, $options: "i"},
-//     }).sort({_id: -1});
-//     if(allListings.length != 0) {
-//         res.locals.success = "Listings searched by location";
-//         res.render("listings/index.ejs", {allListings});
-//         return;
-//     }
-// }
+        let allListings = [];
+        let searchType = "";
+
+        // Search by title first
+        allListings = await Listing.find({
+            title: { $regex: searchQuery, $options: "i" }
+        }).populate("owner");
+
+        if (allListings.length > 0) {
+            searchType = "title";
+        } else {
+            // Search by category
+            allListings = await Listing.find({
+                category: { $regex: searchQuery, $options: "i" }
+            }).populate("owner");
+
+            if (allListings.length > 0) {
+                searchType = "category";
+            } else {
+                // Search by location
+                allListings = await Listing.find({
+                    location: { $regex: searchQuery, $options: "i" }
+                }).populate("owner");
+
+                if (allListings.length > 0) {
+                    searchType = "location";
+                } else {
+                    // Search by country
+                    allListings = await Listing.find({
+                        country: { $regex: searchQuery, $options: "i" }
+                    }).populate("owner");
+
+                    if (allListings.length > 0) {
+                        searchType = "country";
+                    }
+                }
+            }
+        }
+
+        if (allListings.length === 0) {
+            req.flash("error", `No listings found for "${searchQuery}"`);
+            return res.redirect("/listings");
+        }
+
+        req.flash("success", `Found ${allListings.length} listing(s) by ${searchType} for "${searchQuery}"`);
+        res.render("listings/index.ejs", { allListings });
+
+    } catch (error) {
+        console.error("Search error:", error);
+        req.flash("error", "Something went wrong while searching!");
+        res.redirect("/listings");
+    }
+};
