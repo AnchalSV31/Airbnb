@@ -1,47 +1,47 @@
 <% layout("/layouts/boilerplate")%>  
 
     <div id="filters">
-      <a class="filter" href="/listings">
+      <a class="filter" href="/listings" data-filter="all">
         <div><i class="fa-solid fa-house"></i></div>
         <p>All</p>
       </a>
-      <a class="filter" href="/listings/filter/Rooms">
+      <a class="filter" href="/listings/filter/Rooms" data-filter="rooms">
         <div><i class="fa-solid fa-bed"></i></div>
         <p>Rooms</p>
       </a>
-      <a class="filter" href="/listings/filter/Iconic cities">
+      <a class="filter" href="/listings/filter/Iconic%20cities" data-filter="iconic-cities">
         <div><i class="fa-solid fa-mountain-city"></i></div>
         <p>Iconic Cities</p>
       </a>
-      <a class="filter" href="/listings/filter/Mountains">
+      <a class="filter" href="/listings/filter/Mountains" data-filter="mountains">
         <div><i class="fa-solid fa-mountain"></i></div>
         <p>Mountains</p>
       </a>
-      <a class="filter" href="/listings/filter/Castles">
+      <a class="filter" href="/listings/filter/Castles" data-filter="castles">
         <div><i class="fa-brands fa-fort-awesome"></i></div>
         <p>Castles</p>
       </a>
-      <a class="filter" href="/listings/filter/Amazing pools">
+      <a class="filter" href="/listings/filter/Amazing%20pools" data-filter="amazing-pools">
         <div><i class="fa-solid fa-person-swimming"></i></div>
         <p>Amazing Pools</p>
       </a>
-      <a class="filter" href="/listings/filter/Camping">
+      <a class="filter" href="/listings/filter/Camping" data-filter="camping">
         <div><i class="fa-solid fa-campground"></i></div>
         <p>Camping</p>
       </a>
-      <a class="filter" href="/listings/filter/Farms">
+      <a class="filter" href="/listings/filter/Farms" data-filter="farms">
         <div><i class="fa-solid fa-cow"></i></div>
         <p>Farms</p>
       </a>
-      <a class="filter" href="/listings/filter/Arctic">
+      <a class="filter" href="/listings/filter/Arctic" data-filter="arctic">
         <div><i class="fa-regular fa-snowflake"></i></div>
         <p>Arctic</p>
       </a>
-      <a class="filter" href="/listings/filter/Domes">
+      <a class="filter" href="/listings/filter/Domes" data-filter="domes">
         <div><i class="fa-solid fa-igloo"></i></div>
         <p>Domes</p>
       </a>
-      <a class="filter" href="/listings/filter/Boats">
+      <a class="filter" href="/listings/filter/Boats" data-filter="boats">
         <div><i class="fa-solid fa-ship"></i></div>
         <p>Boats</p>
       </a>
@@ -83,6 +83,7 @@
   </div>
   
 <script>
+  // Tax toggle functionality
   let taxSwitch = document.getElementById("flexSwitchCheckDefault");
   taxSwitch.addEventListener("click", () => {
     let taxInfo = document.getElementsByClassName("tax-info");
@@ -94,44 +95,84 @@
       }
     } 
   });
-</script>
 
-<!-- <script>
-const tabs = document.querySelectorAll(".scrollable-tabs-container .filter-container a");
-const filterContainer = document.querySelector(
-    ".scrollable-tabs-container .filter-container"
-);
-
-const removeAllActiveClasses = () => {
-    tabs.forEach((tab) => {
-      tab.classList.remove("active");
+  // Enhanced filter functionality
+  const filters = document.querySelectorAll(".filter");
+  
+  const removeAllActiveClasses = () => {
+    filters.forEach((filter) => {
+      filter.classList.remove("active");
     });
   };
 
-  
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", (event) => {
-      event.preventDefault();
-      setActiveFilter(tab);
-      window.location.href = tab.getAttribute("href");
+  const setActiveFilter = (selectedFilter) => {
+    removeAllActiveClasses();
+    selectedFilter.classList.add("active");
+    
+    // Store the active filter in memory for the session
+    window.currentActiveFilter = selectedFilter.getAttribute("href");
+  };
+
+  // Add click handlers to filters
+  filters.forEach((filter) => {
+    filter.addEventListener("click", (event) => {
+      // Don't prevent default - let the navigation happen
+      setActiveFilter(filter);
     });
   });
 
-  const setActiveFilter = (tab) => {
-  removeAllActiveClasses();
-  tab.classList.add("active"); 
-  localStorage.setItem("activeFilter", tab.getAttribute("href"));
-};
+  // Set active filter based on current URL on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentPath = window.location.pathname;
+    let activeFilter = null;
 
-// Check if there's a stored active filter and set it on page load
-document.addEventListener("DOMContentLoaded", () => {
-  const storedFilter = localStorage.getItem("activeFilter");
-  if (storedFilter) {
-    const activeTab = document.querySelector(`.filter[href="${storedFilter}"]`);
-    if (activeTab) {
-      setActiveFilter(activeTab);
+    // Find matching filter based on current URL
+    filters.forEach((filter) => {
+      const filterPath = filter.getAttribute("href");
+      if (filterPath === currentPath) {
+        activeFilter = filter;
+      }
+    });
+
+    // If no exact match, check if it's a filter route
+    if (!activeFilter && currentPath.includes("/listings/filter/")) {
+      const filterName = currentPath.split("/listings/filter/")[1];
+      filters.forEach((filter) => {
+        if (filter.getAttribute("href").includes(filterName)) {
+          activeFilter = filter;
+        }
+      });
     }
-  }
-});
 
-</script>  -->
+    // Default to "All" if no specific filter matches
+    if (!activeFilter) {
+      activeFilter = document.querySelector('.filter[href="/listings"]');
+    }
+
+    if (activeFilter) {
+      setActiveFilter(activeFilter);
+    }
+  });
+
+  // Add smooth scrolling for horizontal filter navigation on mobile
+  const filtersContainer = document.getElementById("filters");
+  let isScrolling = false;
+
+  filtersContainer.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      e.preventDefault();
+      filtersContainer.scrollLeft += e.deltaX;
+    }
+  });
+
+  // Add loading state for better UX
+  filters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      // Add subtle loading indicator
+      filter.style.opacity = "0.7";
+      setTimeout(() => {
+        filter.style.opacity = "1";
+      }, 300);
+    });
+  });
+</script>

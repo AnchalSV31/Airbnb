@@ -151,3 +151,24 @@ module.exports.search = async (req, res) => {
         res.redirect("/listings");
     }
 };
+
+module.exports.filterListings = async (req, res) => {
+    const { category } = req.params;
+    
+    try {
+        // Decode URL-encoded category name (spaces become %20)
+        const decodedCategory = decodeURIComponent(category);
+        
+        // Filter listings based on category
+        const allListings = await Listing.find({ category: decodedCategory });
+        
+        // Render the same index page with filtered results
+        res.render("listings/index.ejs", { 
+            allListings: allListings 
+        });
+    } catch (err) {
+        console.error("Filter error:", err);
+        req.flash("error", "Something went wrong while filtering!");
+        res.redirect("/listings");
+    }
+};

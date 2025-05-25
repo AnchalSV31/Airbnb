@@ -22,7 +22,8 @@ router
 //New Route
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
-// router.get("/filter/:q", wrapAsync(listingController.filterListings));
+// Filter route - handles /listings/filter/:category
+router.get("/filter/:category", wrapAsync(listingController.filterListings));
 
 //Search
 router.get("/search", listingController.search);

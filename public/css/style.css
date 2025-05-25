@@ -173,3 +173,20 @@ body{
     display: flex;
     align-items: center;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    #filters {
+      padding: 0.5rem 0;
+      gap: 0.5rem;
+    }
+    
+    .filter {
+      min-width: 70px;
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .tax-toggle {
+      padding-left: 1rem;
+    }
+}
