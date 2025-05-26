@@ -1,47 +1,47 @@
 <% layout("/layouts/boilerplate")%>  
 
     <div id="filters">
-      <a class="filter" href="/listings" data-filter="all">
+      <a class="filter" href="/listings" data-filter="All">
         <div><i class="fa-solid fa-house"></i></div>
         <p>All</p>
       </a>
-      <a class="filter" href="/listings/filter/Rooms" data-filter="rooms">
+      <a class="filter" href="/listings/filter/Rooms" data-filter="Rooms">
         <div><i class="fa-solid fa-bed"></i></div>
         <p>Rooms</p>
       </a>
-      <a class="filter" href="/listings/filter/Iconic%20cities" data-filter="iconic-cities">
+      <a class="filter" href="/listings/filter/Iconic%20cities" data-filter="Iconic cities">
         <div><i class="fa-solid fa-mountain-city"></i></div>
         <p>Iconic Cities</p>
       </a>
-      <a class="filter" href="/listings/filter/Mountains" data-filter="mountains">
+      <a class="filter" href="/listings/filter/Mountains" data-filter="Mountains">
         <div><i class="fa-solid fa-mountain"></i></div>
         <p>Mountains</p>
       </a>
-      <a class="filter" href="/listings/filter/Castles" data-filter="castles">
+      <a class="filter" href="/listings/filter/Castles" data-filter="Castles">
         <div><i class="fa-brands fa-fort-awesome"></i></div>
         <p>Castles</p>
       </a>
-      <a class="filter" href="/listings/filter/Amazing%20pools" data-filter="amazing-pools">
+      <a class="filter" href="/listings/filter/Amazing%20pools" data-filter="Amazing pools">
         <div><i class="fa-solid fa-person-swimming"></i></div>
         <p>Amazing Pools</p>
       </a>
-      <a class="filter" href="/listings/filter/Camping" data-filter="camping">
+      <a class="filter" href="/listings/filter/Camping" data-filter="Camping">
         <div><i class="fa-solid fa-campground"></i></div>
         <p>Camping</p>
       </a>
-      <a class="filter" href="/listings/filter/Farms" data-filter="farms">
+      <a class="filter" href="/listings/filter/Farms" data-filter="Farms">
         <div><i class="fa-solid fa-cow"></i></div>
         <p>Farms</p>
       </a>
-      <a class="filter" href="/listings/filter/Arctic" data-filter="arctic">
+      <a class="filter" href="/listings/filter/Arctic" data-filter="Arctic">
         <div><i class="fa-regular fa-snowflake"></i></div>
         <p>Arctic</p>
       </a>
-      <a class="filter" href="/listings/filter/Domes" data-filter="domes">
+      <a class="filter" href="/listings/filter/Domes" data-filter="Domes">
         <div><i class="fa-solid fa-igloo"></i></div>
         <p>Domes</p>
       </a>
-      <a class="filter" href="/listings/filter/Boats" data-filter="boats">
+      <a class="filter" href="/listings/filter/Boats" data-filter="Boats">
         <div><i class="fa-solid fa-ship"></i></div>
         <p>Boats</p>
       </a>
@@ -63,7 +63,7 @@
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
     <% for(let listing of allListings) { %>
     <a href="/listings/<%= listing._id %>" class="listing-link">
-    <div class="card col listing-card">
+    <div class="card col listing-card" data-category="<%= listing.category %>">
         <img
          src="<%= listing.image.url %>"
          class="card-img-top" 
@@ -72,8 +72,8 @@
         <div class="card-img-overlay"></div>
         <div class="card-body">
           <p class ="card-text">
-          <b><%= listing.title %></b><br/>
-          &/listings8377;<%= listing.price.toLocaleString("en-IN") %> / Night
+          <b><%= listing.title %></b><br/> 
+          &#8377;<%= listing.price.toLocaleString("en-IN") %> / Night
           <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
           </p>
         </div>
@@ -83,18 +83,18 @@
   </div>
   
 <script>
-        // Tax toggle functionality
-        let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-        taxSwitch.addEventListener("click", () => {
-            let taxInfo = document.getElementsByClassName("tax-info");
-            for(info of taxInfo){
-                if(info.style.display != "inline"){
-                    info.style.display = "inline";
-                }else{
-                    info.style.display = "none";
-                }
-            } 
-        });
+  // Tax toggle functionality
+  let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+  let taxInfo = document.getElementsByClassName("tax-info");
+  for(info of taxInfo){
+    if(info.style.display != "inline"){
+      info.style.display = "inline";
+    }else{
+      info.style.display = "none";
+    }
+  } 
+});
 
         // Enhanced filter functionality
         const filters = document.querySelectorAll(".filter");

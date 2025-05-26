@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Listing = require("./models/listing"); // Adjust if your model path is different
-const sampleListings = require("./init/data");
+const {sampleListings} = require("./init/data");
 require("dotenv").config();
 
 const dbUrl = process.env.ATLASDB_URL;

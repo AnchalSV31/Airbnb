@@ -43,6 +43,21 @@
       />
       </div>
 
+      <div class="mb-3">
+      <label for="validationCustom04" class="form-label">Category</label>
+      <select class="form-select" id="validationCustom04" name="listing[category]" required>
+        <option selected disabled value="">Select a category</option>
+        <% categories.forEach(function(cat) { %>
+          <option value="<%= cat %>" <%= listing.category === cat ? "selected" : "" %>><%= cat %></option>
+        <% }) %>
+      </select>
+
+      <div class="invalid-feedback">
+        Please select a valid category.
+      </div>
+    </div>
+
+
       <div class="row">
       <div class="mb-3 col-md-4">
       <label for="price" class="form-label"><b>Price</b></label>

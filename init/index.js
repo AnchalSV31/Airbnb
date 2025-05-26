@@ -2,28 +2,41 @@ const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderhub";
+const MONGO_URL = "mongodb+srv://anchal31:anchal2005@cluster0.v4iqd72.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 main()
-   .then(() => {
+  .then(() => {
     console.log("connected to DB");
-   })
-   .catch((err) => {
+  })
+  .catch((err) => {
     console.log(err);
-});
+  });
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+  await mongoose.connect(MONGO_URL);
 }
 
-const initDB = async() => {
-    await Listing.deleteMany({});
-    initData.data = initData.data.map((obj) => ({
-        ...obj,
-         owner:"65dba40c5c8737bc9481114a",
-    }));
-    await Listing.insertMany(initData.data);
-    console.log("data was initialized");
+const initDB = async () => {
+  // Debug: Check what's in initData
+  console.log("initData:", initData);
+  console.log("initData.sampleListings:", initData.sampleListings);
+  
+  await Listing.deleteMany({}); // Clear existing data
+  
+  // Check if sampleListings exists before using it
+  if (!initData.sampleListings) {
+    console.error("Error: sampleListings not found in data.js");
+    return;
+  }
+  
+  // Add default owner to all listings if needed
+  initData.sampleListings = initData.sampleListings.map((obj) => ({
+    ...obj,
+    owner: "someUserId", // Add if you have user authentication
+  }));
+  
+  await Listing.insertMany(initData.sampleListings);
+  console.log("Data was initialized with categories");
 };
 
 initDB();

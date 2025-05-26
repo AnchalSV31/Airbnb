@@ -2,6 +2,18 @@ const Listing = require("../models/listing");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({accessToken: mapToken});
+const categories = [
+  "Rooms",
+  "Mountains",
+  "Iconic cities",
+  "Castles",
+  "Amazing pools",
+  "Camping",
+  "Farms",
+  "Arctic",
+  "Domes",
+  "Boats"
+];
 
 module.exports.index = async(req, res) => {
     const allListings = await Listing.find({});
@@ -60,7 +72,7 @@ module.exports.createListing = async(req, res, next) => {
     }
     let originalImageUrl = listing.image.url;
     originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
-    res.render("listings/edit.ejs", {listing, originalImageUrl });
+    res.render("listings/edit.ejs", {listing, originalImageUrl, categories });
 };
 
 module.exports.updateListing = async(req, res) =>{
@@ -159,12 +171,17 @@ module.exports.filterListings = async (req, res) => {
         // Decode URL-encoded category name (spaces become %20)
         const decodedCategory = decodeURIComponent(category);
         
+        console.log("Filtering by category:", decodedCategory); // Debug log
+        
         // Filter listings based on category
         const allListings = await Listing.find({ category: decodedCategory });
         
+        console.log("Found listings:", allListings.length); // Debug log
+        
         // Render the same index page with filtered results
         res.render("listings/index.ejs", { 
-            allListings: allListings 
+            allListings: allListings,
+            q: decodedCategory // Add this for the heading
         });
     } catch (err) {
         console.error("Filter error:", err);

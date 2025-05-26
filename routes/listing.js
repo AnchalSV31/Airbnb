@@ -23,7 +23,34 @@ router
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
 // Filter route - handles /listings/filter/:category
-router.get("/filter/:category", wrapAsync(listingController.filterListings));
+// router.get("/filter/:category", wrapAsync(listingController.filterListings));
+
+// In your routes file
+router.get("/filter/:category", async (req, res) => {
+    try {
+        const { category } = req.params;
+        
+        // Decode URL-encoded category names (like "Iconic%20cities" becomes "Iconic cities")
+        const decodedCategory = decodeURIComponent(category);
+        
+        console.log("Filtering by category:", decodedCategory); // Debug log
+        
+        // Find listings that match the category
+        const listings = await Listing.find({ category: decodedCategory });
+        
+        console.log("Found listings:", listings.length); // Debug log
+        
+        res.render("listings/index", { 
+            allListings: listings, // Note: using allListings to match your template
+            q: decodedCategory // For the heading
+        });
+        
+    } catch (err) {
+        console.error("Filter error:", err);
+        req.flash("error", "Something went wrong with filtering!");
+        res.redirect("/listings");
+    }
+});
 
 //Search
 router.get("/search", listingController.search);
