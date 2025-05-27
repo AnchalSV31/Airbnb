@@ -1,7 +1,7 @@
-# Airbnb Clone - MERN Stack
+# Home Rental Platfrom - MERN Stack
 
 ## Overview
-This project is a full-stack **Airbnb Clone** built using the **MERN (MongoDB, Express, React, Node.js) stack**. It provides users with the ability to browse, book, and list rental properties, similar to Airbnb.
+This project is a full-stack **Home Rental Platform** built using the **MERN (MongoDB, Express, React, Node.js) stack**. It provides users with the ability to browse, book, and list rental properties, inspired by Airbnb.
 
 ## Features
 - **User Authentication**: Sign up, login, and logout functionality.
