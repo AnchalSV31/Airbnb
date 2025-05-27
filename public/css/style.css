@@ -44,6 +44,11 @@ body{
     margin-right: 1rem;
 }
 
+.f-info-socials i:hover{
+    opacity: 0.6;
+    cursor: pointer;
+}
+
 .f-info{
     height: 8rem;
     text-align: center;

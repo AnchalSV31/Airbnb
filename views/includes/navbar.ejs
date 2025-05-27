@@ -1,4 +1,13 @@
 <style>
+  .nav-link{
+    font-weight: 600;
+  }
+  .title{
+    font-size: large;
+  }
+  .searchbar{
+    padding-top: 1.5rem;
+  }
   .search-btn{
     background-color: #fe424d;
     color: #fff;
@@ -6,7 +15,7 @@
     padding: 0 1rem 0 1rem;
   }
   .search-btn:hover{
-    background-color:#fe424d ;
+    background-color: #f86770;
     color: #fff;
   }
   .search-btn i{
@@ -33,9 +42,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link" href="/listings">Explore</a>  
+          <a class="nav-link title" href="/listings">WanderInn</a>  
         </div>
-        <div class="col-5 offset-2 mb-4">
+        <div class="col-5 offset-2 mb-4 searchbar">
           <form action="/listings/search" method="GET" class="d-flex">
                 <input 
                     class="form-control me-2 search-inp" 
