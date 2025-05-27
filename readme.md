@@ -1,4 +1,4 @@
-# Home Rental Platfrom - MERN Stack
+# Home Rental Platfrom - WanderInn
 
 ## Overview
 This project is a full-stack **Home Rental Platform** built using the **MERN (MongoDB, Express, React, Node.js) stack**. It provides users with the ability to browse, book, and list rental properties, inspired by Airbnb.
