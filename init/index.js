@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb+srv://anchal31:anchal2005@cluster0.v4iqd72.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+require("dotenv").config(); 
+
+const MONGO_URL = process.env.MONGO_URL; 
 
 main()
   .then(() => {
